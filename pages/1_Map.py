@@ -127,42 +127,33 @@ st.subheader('Total Sales Amount')
 total_sum=grouped_df['sales'].sum()
 st.write(f'<span style="font-size: 36px;">${total_sum:,.2f}</span>', unsafe_allow_html=True)
 
+top_10_best_sellers = filtered_df.groupby('family')['sales'].sum().nlargest(10).reset_index()
+
+# Filter and sort data to get top 10 selling stores
+top_10_selling_stores = filtered_df.groupby('store_nbr')['sales'].sum().nlargest(10).reset_index()
 
 col1, col2 = st.columns(2)
 
 with col1:
     st.header("Top 10 Best Sellers")
-    bar_chart1 = alt.Chart(grouped_df).mark_bar().encode(
+    bar_chart1 = alt.Chart(top_10_best_sellers).mark_bar().encode(
         x=alt.X("sales:Q", title="Sales"),
         y=alt.Y(
             "family:N",
             sort=alt.EncodingSortField(field="sales", op="sum", order="descending"),
             title="Product Category"
         )
-   
     )
-    # Display the first bar chart
     st.altair_chart(bar_chart1, use_container_width=True)
-
 
 with col2:
     st.header("Top 10 Selling Stores")
-    bar_chart2 = alt.Chart(grouped_df).mark_bar().encode(
-    x=alt.X("sales:Q", title="Sales"),
-    y=alt.Y(
-        "Store #:N",
-        sort=alt.EncodingSortField(field="sales", op="sum", order="descending"),
-        title="Address"
+    bar_chart2 = alt.Chart(top_10_selling_stores).mark_bar().encode(
+        x=alt.X("sales:Q", title="Sales"),
+        y=alt.Y(
+            "store_nbr:N",  # Assuming 'store_nbr' is the field representing store numbers
+            sort=alt.EncodingSortField(field="sales", op="sum", order="descending"),
+            title="Store Number"
+        )
     )
-    )
-    # Display the first bar chart
-    st.altair_chart(bar_chart2, use_container_width=True)   
-
-
-
-# fig = px.pie(grouped_df[grouped_df['sales']>0], values='sales', names='family', color_discrete_sequence=px.colors.sequential.RdBu)
-
-
-# st.plotly_chart(fig)
-
-      
+    st.altair_chart(bar_chart2, use_container_width=True)
