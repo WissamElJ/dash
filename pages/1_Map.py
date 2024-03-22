@@ -10,7 +10,7 @@ import random
 alt.themes.enable("dark")
 column_names = [
     'id', 'date', 'store_nbr', 'family', 'sales', 'onpromotion', 'year', 'month', 'day', 'city', 'state', 'type', 
-    'cluster', 'Full_Address', 'Latitude', 'Longitude'
+    'cluster', 'Full_Address', 'latitude', 'longitude'
 ]
 @st.cache_data
 def load_data(path):
