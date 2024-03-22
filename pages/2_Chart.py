@@ -7,9 +7,14 @@ import folium
 from utils import *
 import random
 alt.themes.enable("dark")
+column_names = [
+    'id', 'date', 'store_nbr', 'family', 'sales', 'onpromotion', 'year', 'month', 'day', 'city', 'state', 'type', 
+    'cluster', 'Full_Address', 'Latitude', 'Longitude'
+]
+
 @st.cache_data
 def load_data(path):
-    df = pd.read_csv(path, index_col=False)
+    df = pd.read_csv(path, header=None)
     return df
 
     # Page config
@@ -22,8 +27,9 @@ st.write('ℹ️ The dataset size is reduced to reduce webpage lag')
 st.write('💡 Hold and drag the mouse button on the top panel to filter out the date. You can also click on the bars in the bar chart to preview unique addresses.')
 ######## Load data ###########
 df3 = load_data('train_final.csv')
-df = df3[-200000:]
-df.drop('id',axis=1,inplace=True)
+df3.columns = column_names
+#df = df3[-200000:]
+#df.drop('id',axis=1,inplace=True)
 
 ######## Filter Dataframe ###########
 year_options = ["Select All"] + sorted(df['year'].unique().tolist())

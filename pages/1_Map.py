@@ -8,9 +8,13 @@ import folium
 from utils import *
 import random
 alt.themes.enable("dark")
+column_names = [
+    'id', 'date', 'store_nbr', 'family', 'sales', 'onpromotion', 'year', 'month', 'day', 'city', 'state', 'type', 
+    'cluster', 'Full_Address', 'Latitude', 'Longitude'
+]
 @st.cache_data
 def load_data(path):
-    df = pd.read_csv(path, index_col=False)
+    df = pd.read_csv(path, header=None)
     return df
 
     # Page config
@@ -22,7 +26,8 @@ st.set_page_config(
 
 ######## Load data ###########
 df = load_data('train_final.csv')
-df.drop('id',axis=1,inplace=True)
+df.columns = column_names
+#df.drop('id',axis=1,inplace=True)
 
 ######## Filter Dataframe ###########
 year_options = ["Select All"] + sorted(df['year'].unique().tolist())
